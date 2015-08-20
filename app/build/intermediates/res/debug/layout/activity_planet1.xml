@@ -1,0 +1,6 @@
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/fragment"
+    android:name="com.matrimony.training.assignment.Planet1Fragment"
+    tools:layout="@layout/fragment_planet1" android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+<!-- From: file:/D:/BharatMatrimony/AndroidDevelopment/TrainingAssigment/Assignment/app/src/main/res/layout/activity_planet1.xml -->

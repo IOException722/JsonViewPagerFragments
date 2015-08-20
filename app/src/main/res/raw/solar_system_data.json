@@ -1,0 +1,87 @@
+{
+  "sun":{
+    "mass":"333,000 earths",
+    "volume":"1,300,000 earths",
+    "gravity":"27.94 g",
+    "surface area":"12000 earths",
+    "satellites":[]
+  },
+  "mercury":{
+    "mass":"0.055 earths",
+    "volume":"0.56 earths",
+    "gravity":"0.38 g",
+    "surface area":"0.147 earths",
+    "satellites":[]
+  },
+  "venus":{
+    "mass":"0.815 earths",
+    "volume":"0.866 earths",
+    "gravity":"0.904 g",
+    "surface area":"0.902 earths",
+    "satellites":[]
+  },
+  "earth":{
+    "mass":"1 earth",
+    "volume":"1 earth",
+    "gravity":"1 g",
+    "surface area":"1 earth",
+    "satellites":["moon"]
+  },
+  "mars":{
+    "mass":"1 earth",
+    "volume":"1 earth",
+    "gravity":"1 g",
+    "Surface area":"1 earths",
+    "satellites":[
+      "phobos",
+      "deimos"
+      ]
+  },
+  "jupiter":{
+    "mass":"317.8 earths",
+    "volume":"1321.3 earths",
+    "gravity":"2.5 g",
+    "Surface area":"121.9 earths",
+    "satellites":[
+      "Europa",
+      "Callisto",
+      "Io",
+      "Metis"
+      ]
+  },
+
+  "saturn":{
+    "mass":"95 earths",
+    "volume":"763 earths",
+    "gravity":"1.065 g",
+    "surface area":"83 earths",
+    "satellites":[
+      "Mimas",
+      "Titan",
+      "Dione",
+      "Iapetus",
+      "Rhea"
+      ]
+  },
+  "uranus":{
+    "mass":"14.56 earths",
+    "volume":"63 earths",
+    "gravity":"0.886 g",
+    "surface area":"15.91 earths",
+    "satellites":[
+      "Miranda",
+      "Ariel",
+      "Titania",
+      "Oberon"
+      ]
+  },
+  "neptune":{
+    "mass":"17 earths",
+    "volume":"57 earths",
+    "gravity":"1.14 g",
+    "surface area":"14.98 earths",
+    "satellites":[
+      "many"
+      ]
+  }
+}
