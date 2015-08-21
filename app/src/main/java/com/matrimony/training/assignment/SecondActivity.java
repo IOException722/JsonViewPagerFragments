@@ -41,8 +41,6 @@ public class SecondActivity extends AppCompatActivity implements Planet1Fragment
     ArrayList<String> mFragmentTagList;
     HashMap<String, String> pDetail;
     ArrayList<String> pSatellites;
-    int identifier;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,18 +52,6 @@ public class SecondActivity extends AppCompatActivity implements Planet1Fragment
 
         mFragmentTagList = new ArrayList<String>();
 
-        switch (identifier)
-        {
-            case 1:
-                Planet2Fragment fragment = Planet2Fragment.newInstance("Sample String 1","Sample String 2");
-                FragmentManager manager = getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.add(R.id.parent, fragment, "Planet2");
-                transaction.addToBackStack("planet2");
-                transaction.commit();
-                break;
-            default:
-        }
         if(imgId == R.drawable.list_earth){
             Log.v("Hiiii", imgId.toString());
             Planet1Fragment fragment = Planet1Fragment.newInstance("Sample String 1","Sample String 2");
@@ -182,7 +168,6 @@ public class SecondActivity extends AppCompatActivity implements Planet1Fragment
 
     @Override
     public void sendIndetifier2() {
-        identifier = position;
         Log.v("Idinfuncitonsendid", Integer.toString(identifier));
         clearAllFragments();
         Planet2Fragment fragment = Planet2Fragment.newInstance("Sample String 1","Sample String 2");
@@ -202,8 +187,6 @@ public class SecondActivity extends AppCompatActivity implements Planet1Fragment
     @Override
     public void sendIdentifer(int position) {
 
-        identifier = position;
-        Log.v("Idinfuncitonsendid", Integer.toString(identifier));
         clearAllFragments();
         Planet2Fragment fragment = Planet2Fragment.newInstance("Sample String 1","Sample String 2");
         FragmentManager manager = getSupportFragmentManager();

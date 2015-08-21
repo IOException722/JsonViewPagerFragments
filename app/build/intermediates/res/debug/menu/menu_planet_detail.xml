@@ -5,4 +5,4 @@
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>
-<!-- From: file:/D:/BharatMatrimony/AndroidDevelopment/TrainingAssigment/Assignment/app/src/main/res/menu/menu_planet_detail.xml -->
+<!-- From: file:/D:/BharatMatrimony/AndroidDevelopment/TrainingAssigment/JsonViewPagerFragementExample/app/src/main/res/menu/menu_planet_detail.xml -->
