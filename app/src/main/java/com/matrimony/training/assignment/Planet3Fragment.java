@@ -18,6 +18,7 @@ import android.widget.TextView;
  * Use the {@link Planet3Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class Planet3Fragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

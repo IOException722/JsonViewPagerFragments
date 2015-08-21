@@ -48,7 +48,6 @@ public class SecondActivity extends AppCompatActivity implements Planet1Fragment
         Intent intent = getIntent();
         Integer imgId = intent.getIntExtra("imageid", -1);
         planetName = intent.getStringExtra("planetname");
-        Log.v("idinsideoncreate", Integer.toString(identifier));
 
         mFragmentTagList = new ArrayList<String>();
 
@@ -62,9 +61,6 @@ public class SecondActivity extends AppCompatActivity implements Planet1Fragment
             mFragmentTagList.add("Planet1");
             transaction.commit();
         }
-
-
-
     }
 
     private String getJSON(int resourceId){
@@ -168,7 +164,6 @@ public class SecondActivity extends AppCompatActivity implements Planet1Fragment
 
     @Override
     public void sendIndetifier2() {
-        Log.v("Idinfuncitonsendid", Integer.toString(identifier));
         clearAllFragments();
         Planet2Fragment fragment = Planet2Fragment.newInstance("Sample String 1","Sample String 2");
         FragmentManager manager = getSupportFragmentManager();
@@ -180,7 +175,6 @@ public class SecondActivity extends AppCompatActivity implements Planet1Fragment
 
     @Override
     public void changeMethod(String string) {
-
 
     }
 
@@ -194,7 +188,6 @@ public class SecondActivity extends AppCompatActivity implements Planet1Fragment
         transaction.add(R.id.parent, fragment, "Planet2");
         transaction.addToBackStack("planet2");
         transaction.commit();
-
     }
 
     private void clearAllFragments(){
