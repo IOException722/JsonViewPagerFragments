@@ -1,11 +1,7 @@
 package com.matrimony.training.assignment;
-
-
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
-
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,11 +12,9 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,14 +24,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-
 public class SecondActivity extends AppCompatActivity implements Planet1Fragment.OnFragmentInteractionListener,
-                                                        Planet2Fragment.OnFragmentInteractionListener{
-/*    TextView pName,pMass,pVoulme,pGravity, pSarea;
-    Button bNext,bPrev;
-    ImageView pImg;*/
+                                                        Planet2Fragment.OnFragmentInteractionListener,
+                                                        Planet3Fragment.OnFragmentInteractionListener,
+                                                        Planet4Fragment.OnFragmentInteractionListener,
+                                                        Planet5Fragment.OnFragmentInteractionListener,
+                                                        Planet6Fragment.OnFragmentInteractionListener,
+                                                        Planet7Fragment.OnFragmentInteractionListener,
+                                                        Planet8Fragment.OnFragmentInteractionListener,
+                                                        Planet9Fragment.OnFragmentInteractionListener
 
-    String planetName;
+
+    {
+
+    String planetName, output;
     ArrayList<String> mFragmentTagList;
     HashMap<String, String> pDetail;
     ArrayList<String> pSatellites;
@@ -46,45 +46,83 @@ public class SecondActivity extends AppCompatActivity implements Planet1Fragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.second);
         Intent intent = getIntent();
-        Integer imgId = intent.getIntExtra("imageid", -1);
+     //   Integer imgId = intent.getIntExtra("imageid", -1);
         planetName = intent.getStringExtra("planetname");
+        Log.v("planetname", planetName);
 
+        pDetail = new HashMap<String, String>();
+        pSatellites = new ArrayList<String>();
         mFragmentTagList = new ArrayList<String>();
-
-        if(imgId == R.drawable.list_earth){
-            Log.v("Hiiii", imgId.toString());
+        output = getJSON(R.raw.solar_system_data);
+        if(planetName.toUpperCase().equals("EARTH")){
             Planet1Fragment fragment = Planet1Fragment.newInstance("Sample String 1","Sample String 2");
-            FragmentManager manager = getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.add(R.id.parent, fragment, "Planet1");
-            transaction.addToBackStack("planet1");
-            mFragmentTagList.add("Planet1");
-            transaction.commit();
+            callFragment(output, fragment, "Planet1");
+        }
+        else if(planetName.toUpperCase().equals("JUPITER")){
+            Planet2Fragment fragment = Planet2Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output, fragment, "Planet2");
+        }
+       else if(planetName.toUpperCase().equals("MARS")){
+            Planet3Fragment fragment = Planet3Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output, fragment, "Planet3");
+        }
+        else if(planetName.toUpperCase().equals("MERCURY")){
+
+            Planet4Fragment fragment = Planet4Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output, fragment, "Planet4");
+        }
+        else if(planetName.toUpperCase().equals("NEPTUNE")){
+            Planet5Fragment fragment = Planet5Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output, fragment, "Planet5");
+        }
+        else if(planetName.toUpperCase().equals("SATURN")){
+            Planet6Fragment fragment = Planet6Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output, fragment, "Planet6");
+        }
+        else if(planetName.toUpperCase().equals("SUN")){
+            Planet7Fragment fragment = Planet7Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output, fragment, "Planet7");
+        }
+        else if(planetName.toUpperCase().equals("URANUS")){
+            Planet8Fragment fragment = Planet8Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output, fragment, "Planet8");
+        }
+        else if(planetName.toUpperCase().equals("VENUS")) {
+            Planet9Fragment fragment = Planet9Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output, fragment, "Planet9");
         }
     }
 
+    public void callFragment(String output, Fragment fragment, String tag)
+    {
+        pDetail.clear();
+        pSatellites.clear();
+        clearAllFragments();
+        Log.v("ohyeah", planetName);
+        processOutput(output, planetName);
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(R.id.parent, fragment, tag);
+        transaction.addToBackStack(null);
+        mFragmentTagList.add(tag);
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("mSatellites", pSatellites);
+        bundle.putSerializable("pDetail",pDetail);
+        fragment.setArguments(bundle);
+        transaction.commit();
+    }
     private String getJSON(int resourceId){
-
         char[] buffer = new char[2048];
         try{
-            // Obtain an InputStream from the raw resource
             InputStream inputStream = getResources().openRawResource(resourceId);
-            // Initialize a BufferedReader
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            // Create a writer object
             Writer writer = new StringWriter();
-            // loop through BufferedReader until it has read all characters
             int n;
             while ((n = reader.read(buffer)) != -1) {
                 writer.write(buffer, 0, n);
             }
-
-            // This is very important! Do not forget to close your BufferedReader
             reader.close();
-            // This is again very important ! Do not forget to close InputStream
             inputStream.close();
-
-            // Print JSON to output
             Log.v("JSON", writer.toString());
 
             return writer.toString();
@@ -93,69 +131,60 @@ public class SecondActivity extends AppCompatActivity implements Planet1Fragment
             exception.printStackTrace();
             return null;
         }
-
     }
+    private void processOutput(String output, String planetName){
+        try {
+            JSONObject jsonObject = new JSONObject(output);
+            HashMap<String,String> map = new HashMap<String,String>();
+            Iterator<String> iterator = jsonObject.keys();
+            while(iterator.hasNext()){
+                String key = iterator.next();
+                if(key.toUpperCase().equals(planetName.toUpperCase()))
+                {
+                    JSONObject jsonObject1 = new JSONObject(jsonObject.getString(key));
+                    Iterator<String> iterator1 = jsonObject1.keys();
+                    while (iterator1.hasNext())
+                    {
+                        String key1 = iterator1.next();
+                        if(key1.equals("satellites"))
+                        {
+                            JSONArray jsonArray = jsonObject1.getJSONArray(key1);
+                            int length2 = jsonArray.length();
+                            for(int index=0; index<length2; index++)
+                            {
+                                pSatellites.add(jsonArray.get(index).toString());
+                            }
+                        }
+                        else
+                            pDetail.put(key1,jsonObject1.getString(key1));
+                    }
+                }
+            }
+        }
+        catch(JSONException jsonException){
 
+            jsonException.printStackTrace();
+        }
+        catch(Exception exception){
+
+            exception.printStackTrace();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_second, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
-
-    /*@Override
-    public void onStart(){
-        super.onStart();
-        Log.v("ACTIVITY START","ACTIVITY ON START");
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        Log.v("ACTIVITY ON RESUME","ACTIVITY ON RESUME");
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        Log.v("ACTIVITY ON PAUSE","ACTIVITY ON PAUSE");
-
-    }
-
-    @Override
-    public void onStop(){
-        super.onStop();
-        Log.v("ACTIVITY ON STOP","ACTIVITY ON STOP");
-    }
-
-
-    @Override
-    public void onRestart(){
-        super.onRestart();
-        Log.v("ACTIVITY ON RESTART", "ACTIVITY ON RESTART");
-    }
-
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-        Log.v("ACTIVITY ON DESTROY","ACTIVITY ON DESTROY");
-    }*/
 
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -163,31 +192,138 @@ public class SecondActivity extends AppCompatActivity implements Planet1Fragment
     }
 
     @Override
-    public void sendIndetifier2() {
-        clearAllFragments();
-        Planet2Fragment fragment = Planet2Fragment.newInstance("Sample String 1","Sample String 2");
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.parent, fragment, "Planet2");
-        transaction.addToBackStack("planet2");
-        transaction.commit();
+    public void sendIdentifier3(boolean position) {
+
+        if(position)
+        {
+            Planet4Fragment fragment = Planet4Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet4");
+        }
+        else
+        {
+            Planet2Fragment fragment = Planet2Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet2");
+        }
+
     }
 
     @Override
-    public void changeMethod(String string) {
+    public void sendIdentifier5(boolean position) {
+
+        if(position)
+        {
+            Planet6Fragment fragment = Planet6Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet6");
+        }
+        else
+        {
+            Planet4Fragment fragment = Planet4Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet4");
+        }
+
 
     }
 
     @Override
-    public void sendIdentifer(int position) {
+    public void sendIdentifier9(boolean position) {
 
-        clearAllFragments();
-        Planet2Fragment fragment = Planet2Fragment.newInstance("Sample String 1","Sample String 2");
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.parent, fragment, "Planet2");
-        transaction.addToBackStack("planet2");
-        transaction.commit();
+        if(position)
+        {
+
+        }
+        else
+        {
+            Planet8Fragment fragment = Planet8Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet8");
+        }
+    }
+
+    @Override
+    public void sendIdentifier7(boolean position) {
+
+        if(position)
+        {
+            Planet8Fragment fragment = Planet8Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet8");
+        }
+        else
+        {
+            Planet6Fragment fragment = Planet6Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet6");
+        }
+    }
+
+    @Override
+    public void sendIdentifier8(boolean position) {
+        if(position)
+        {
+            Planet9Fragment fragment = Planet9Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet9");
+        }
+        else
+        {
+            Planet7Fragment fragment = Planet7Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet7");
+        }
+
+
+    }
+
+    @Override
+    public void sendIdentifier6(boolean position) {
+
+        if(position)
+        {
+            Planet7Fragment fragment = Planet7Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet7");
+        }
+        else
+        {
+            Planet5Fragment fragment = Planet5Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet5");
+        }
+
+    }
+
+    @Override
+    public void sendIdentifier4(boolean position) {
+        if(position)
+        {
+            Planet5Fragment fragment = Planet5Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet5");
+        }
+        else
+        {
+            Planet3Fragment fragment = Planet3Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet3");
+        }
+
+    }
+
+    @Override
+    public void sendIdentifier2(boolean position) {
+        if(position)
+        {
+            Planet3Fragment fragment = Planet3Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet3");
+        }
+        else
+        {
+            Planet1Fragment fragment = Planet1Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet1");
+        }
+
+    }
+
+
+    @Override
+    public void sendIdentifer(boolean position)
+    {
+        if(position)
+        {
+            Planet2Fragment fragment = Planet2Fragment.newInstance("Sample String 1","Sample String 2");
+            callFragment(output,fragment,"Planet2");
+        }
     }
 
     private void clearAllFragments(){

@@ -30,6 +30,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.matrimony.training.assignment.MainActivity" />
         </activity>
+        <activity
+            android:name="com.matrimony.training.assignment.ViewPagerActivity"
+            android:label="@string/title_activity_view_pager" >
+        </activity>
     </application>
 
 </manifest>

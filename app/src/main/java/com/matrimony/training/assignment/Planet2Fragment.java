@@ -1,6 +1,7 @@
 package com.matrimony.training.assignment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -89,174 +90,77 @@ public class Planet2Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
-        View view =  inflater.inflate(R.layout.fragment_planet1, container, false);
-        pName = (TextView)view.findViewById(R.id.planetname);
+        View view = inflater.inflate(R.layout.fragment_planet1, container, false);
+        pDetail = new HashMap<String, String>();
+        pSatellites = new ArrayList<String>();
+        pDetail = (HashMap<String, String>) getArguments().getSerializable("pDetail");
+        pSatellites = (ArrayList<String>)getArguments().getStringArrayList("mSatellites");
+        pName = (TextView) view.findViewById(R.id.planetname);
         plName = (TextView) view.findViewById(R.id.pname);
         pMass = (TextView) view.findViewById(R.id.pmass);
-        pVoulme = (TextView)view.findViewById(R.id.pvolume);
-        pSarea =(TextView)view.findViewById(R.id.psarea);
-        pGravity = (TextView)view. findViewById(R.id.pgravity);
-        pImg= (ImageView)view.findViewById(R.id.planetimage);
-        bNext = (Button)view.findViewById(R.id.bnext);
-        bPrev = (Button)view.findViewById(R.id.bprev);
+        pVoulme = (TextView) view.findViewById(R.id.pvolume);
+        pSarea = (TextView) view.findViewById(R.id.psarea);
+        pGravity = (TextView) view.findViewById(R.id.pgravity);
+        pImg = (ImageView) view.findViewById(R.id.planetimage);
+        bNext = (Button) view.findViewById(R.id.bnext);
+        bPrev = (Button) view.findViewById(R.id.bprev);
         pSat = (TextView) view.findViewById(R.id.psatelite);
         iMg1 = (ImageView) view.findViewById(R.id.img1);
         iMg2 = (ImageView) view.findViewById(R.id.img2);
         iMg3 = (ImageView) view.findViewById(R.id.img3);
-        pSatellites = new ArrayList<String>();
-        pDetail = new HashMap<String, String>();
-        String output2 = getJSON(R.raw.solar_system_data);
-        processOutput2(output2);
 
-        Log.v("PDis", pDetail.toString());
-        Log.v("satellites", pSatellites.toString());
         pImg.setImageResource(R.drawable.list_jupiter);
+        pImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ViewPagerActivity.class);
+                intent.putExtra("plno", 2);
+                startActivity(intent);
+            }
+        });
         pName.setText("Jupiter");
         plName.setText("Planet : Jupiter ");
-        for(String str:pDetail.keySet()) {
+        for (String str : pDetail.keySet()) {
             Log.v("Values", str);
-            if(str.equals("mass"))
-            {
+            if (str.equals("mass")) {
                 pMass.setText("Mass : " + pDetail.get(str));
-            }
-            else if(str.equals("volume"))
-            {
-                pVoulme.setText("Volume : "+ pDetail.get(str));
-            }
-            else if(str.equals("gravity"))
-            {
-                pGravity.setText("Gravity : "+ pDetail.get(str));
-            }
-            else
+            } else if (str.equals("volume")) {
+                pVoulme.setText("Volume : " + pDetail.get(str));
+            } else if (str.equals("gravity")) {
+                pGravity.setText("Gravity : " + pDetail.get(str));
+            } else
                 pSarea.setText("Surface Area : " + pDetail.get(str));
         }
 
         String sat = "Satellites : ";
-        for(int i=0;i<pSatellites.size();i++)
-        {
-            if(i>=1)
-            {
-                sat = sat+",";
+        for (int i = 0; i < pSatellites.size(); i++) {
+            if (i >= 1) {
+                sat = sat + ",";
             }
-            sat=sat+pSatellites.get(i);
+            sat = sat + pSatellites.get(i);
         }
         pSat.setText(sat);
 
-        iMg1.setImageResource(R.drawable.list_jupiter);
-        iMg2.setImageResource(R.drawable.list_jupiter);
-        iMg3.setImageResource(R.drawable.list_jupiter);
+        iMg1.setImageResource(R.drawable.jupiter1);
+        iMg2.setImageResource(R.drawable.jupiter2);
+        iMg3.setImageResource(R.drawable.jupiter3);
 
-       /* TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);*/
-
-       /* bNext.setOnClickListener(new View.OnClickListener() {
+        bNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.sendIdentifer(1);
+                mListener.sendIdentifier2(true);
             }
-        });*/
+        });
 
-      /*  bPrev.setOnClickListener(new View.OnClickListener() {
+        bPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.sendIdentifer(0);
+                mListener.sendIdentifier2(false);
             }
-        });*/
+        });
         return view;
+
     }
-
-    private String getJSON(int resourceId){
-
-        char[] buffer = new char[2048];
-        try{
-            // Obtain an InputStream from the raw resource
-            InputStream inputStream = getResources().openRawResource(resourceId);
-            // Initialize a BufferedReader
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            // Create a writer object
-            Writer writer = new StringWriter();
-            // loop through BufferedReader until it has read all characters
-            int n;
-            while ((n = reader.read(buffer)) != -1) {
-                writer.write(buffer, 0, n);
-            }
-
-            // This is very important! Do not forget to close your BufferedReader
-            reader.close();
-            // This is again very important ! Do not forget to close InputStream
-            inputStream.close();
-
-            // Print JSON to output
-            Log.v("JSON", writer.toString());
-
-            return writer.toString();
-
-        }catch(Exception exception){
-            exception.printStackTrace();
-            return null;
-        }
-    }
-
-    // Study the underlying JSON well before using this method
-    private void processOutput2(String output){
-        try {
-            // Since the JSON output begins with curly-braces this implies that it
-            // is a JSONObject, hence use the JSONObject class
-            JSONObject jsonObject = new JSONObject(output);
-            int length = jsonObject.length();
-            HashMap<String,String> map = new HashMap<String,String>();
-            // Iterating through a JSON Object requires an iterator mapped to its keys
-            Iterator<String> iterator = jsonObject.keys();
-            while(iterator.hasNext()){
-                String key = iterator.next();
-                Log.v("kyees", key);
-                // Obtain values from keys
-                Log.v("upp",key.toUpperCase());
-                if(key.toUpperCase().equals("JUPITER"))
-                {
-                    Log.v("iiikeya", key);
-                    JSONObject jsonObject1 = new JSONObject(jsonObject.getString(key));
-                    Log.v("iiikey", key);
-                    Iterator<String> iterator1 = jsonObject1.keys();
-                    int lenght1 = jsonObject1.length();
-                    while (iterator1.hasNext())
-                    {
-
-                        String key1 = iterator1.next();
-                        if(key1.equals("satellites"))
-                        {
-                            JSONArray jsonArray = jsonObject1.getJSONArray(key1);
-                            int length2 = jsonArray.length();
-                            for(int index=0; index<length2; index++)
-                            {
-                                pSatellites.add(jsonArray.get(index).toString());
-                                Log.v("insideequals", jsonArray.get(index).toString());
-                            }
-                        }
-                        else
-                            pDetail.put(key1,jsonObject1.getString(key1));
-                    }
-                }
-
-                Log.v("pdetail", pDetail.toString());
-                Log.v("pSatellites", pSatellites.toString());
-            }
-
-            Log.v("MAP",map.toString());
-        }
-        // Has to be implemented, otherwise compilation will fail - remove the try and catch-blocks
-        catch(JSONException jsonException){
-
-            jsonException.printStackTrace();
-        }
-        catch(Exception exception){
-
-            exception.printStackTrace();
-        }
-    }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -294,7 +198,7 @@ public class Planet2Fragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
-        public void sendIndetifier2();
+        public void sendIdentifier2(boolean position);
     }
 
 }

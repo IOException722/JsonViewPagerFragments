@@ -230,6 +230,7 @@
     <string name="title_activity_planet_detail">PlanetDetail</string>
     <string name="title_activity_planet_detailf_fragment">PlanetDetailfFragment</string>
     <string name="title_activity_second">SecondActivity</string>
+    <string name="title_activity_view_pager">ViewPager</string>
     <!-- From: file:/D:/BharatMatrimony/AndroidDevelopment/TrainingAssigment/JsonViewPagerFragementExample/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>

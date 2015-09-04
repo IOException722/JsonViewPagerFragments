@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(in);
                 }
             });
+
             return convertView;
         }
     }
